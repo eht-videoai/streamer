@@ -1,0 +1,18 @@
+services:
+  mediamtx:
+    container_name: mediamtx
+    image: bluenviron/mediamtx:latest
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /opt/streamer/config/mediamtx.yml:/mediamtx.yml:ro
+
+  ffmpeg-streamer:
+    container_name: ffmpeg-streamer
+    image: linuxserver/ffmpeg:latest
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /opt/streamer/videos:/videos:ro
+      - /opt/streamer/config/ffmpeg-streaming.sh:/ffmpeg-streaming.sh:ro
+    entrypoint: ["/bin/bash", "/ffmpeg-streaming.sh"]
